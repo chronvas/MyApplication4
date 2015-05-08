@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/EdTxName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:editable="true"
+        android:maxLines="3"
+        android:maxLength="22" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"
+        android:id="@+id/button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Από:"
+        android:paddingTop="20dp"
+        android:id="@+id/textView"
+        android:layout_below="@+id/EdTxName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ΩΡΑ"
+        android:id="@+id/BtnFromTime"
+        android:onClick="showTimePickerDialog"
+        android:layout_alignTop="@+id/BtnFromDate"
+        android:layout_alignRight="@+id/EdTxName"
+        android:layout_alignEnd="@+id/EdTxName"
+        android:layout_alignLeft="@+id/FromTime"
+        android:layout_alignStart="@+id/FromTime" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ΗΜ/ΝΙΑ"
+        android:onClick="showDatePickerDialog"
+        android:id="@+id/BtnFromDate"
+        android:layout_below="@+id/FromDate"
+        android:layout_toLeftOf="@+id/FromTime"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Εώς:"
+        android:paddingTop="20dp"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/BtnFromTime"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="ΗΜΕΡΟΜΗΝΙΑ"
+        android:id="@+id/FromDate"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="ΩΡΑ"
+        android:id="@+id/FromTime"
+        android:paddingLeft="35dp"
+        android:layout_above="@+id/BtnFromDate"
+        android:layout_toRightOf="@+id/FromDate"
+        android:layout_toEndOf="@+id/FromDate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="ΗΜΕΡΟΜΗΝΙΑ"
+        android:id="@+id/ToDate"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/BtnFromTime"
+        android:layout_toStartOf="@+id/BtnFromTime" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="ΩΡΑ"
+        android:paddingLeft="35dp"
+        android:id="@+id/ToTime"
+        android:layout_below="@+id/textView2"
+        android:layout_toRightOf="@+id/ToDate"
+        android:layout_alignRight="@+id/FromTime"
+        android:layout_alignEnd="@+id/FromTime" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showDatePickerDialogUtil"
+
+        android:text="ΗΜ/ΝΙΑ"
+        android:id="@+id/BtnToDate"
+        android:layout_below="@+id/ToDate"
+        android:layout_toLeftOf="@+id/ToTime"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ΩΡΑ"
+        android:onClick="showTimePickerDialogUntil"
+        android:id="@+id/BtnToTime"
+        android:layout_below="@+id/ToTime"
+        android:layout_toRightOf="@+id/ToDate"
+        android:layout_toEndOf="@+id/ToDate" />
+
+
+</RelativeLayout>
