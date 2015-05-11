@@ -24,48 +24,48 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 
 /**
- * Created by Big on 5/5/2015. OnTimeChanged must go
+ * Created by Big on 5/5/2015.
  */
 
 public class TimePickerClass {
+
+public int FromDate_Month;
+    public void setFromDate_Month(int fromDate_Month) {
+        FromDate_Month = fromDate_Month;
+    }
+
+    public int getFromDate_Month() {
+        return FromDate_Month;
+    }
 
     public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener ,DatePickerDialog.OnDateSetListener {
 
 
+
         public class whocalled{
             public int getwhocalledme(){
-                Activity  a = getActivity();
-                Context c = a.getApplicationContext();
-                SharedPreferences sharedpreferences = c.getApplicationContext().getSharedPreferences("sharedpref", Context.MODE_MULTI_PROCESS);
-                String who = sharedpreferences.getString("whyucalled", "no");
-                int result=-1;
-                String ShowTime="showtime";
-                String ShowDate="showdate";
-                String ShowTimeUntil="showtimeUntil";
-                String ShowDateUntil="showdateUntil";
-                if (who==null) return -1;
-                if( who.equals(ShowTime) )  {
-                    return 1;
-                }
-                else if(who.equals(ShowDate)) {
-                    return 2;
-                }
-                else if (who.equals(ShowTimeUntil)) {
-                    return 3;
-                }
-                else if (who.equals(ShowDateUntil)){
-                    return 4;
-                }
-                return result;
 
+                Activity activity = getActivity();
+                Context context = activity.getApplicationContext();
+/*                SharedPreferences sharedpreferences = c.getSharedPreferences("sharedpref", Context.MODE_MULTI_PROCESS);
+                String who = sharedpreferences.getString("whyucalled", "no");
+                switch (who){*/
+                MySharedPreff my = new MySharedPreff(context);
+                String f = my.getString("whyucalled");
+                switch (f){
+                    case "showtime": return 1;
+                    case "showdate": return 2;
+                    case "showtimeUntil": return 3;
+                    case "showdateUntil": return 4;
+                    default : return -1;
+                }
             }
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current time as the default values for the picker
-
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
@@ -73,46 +73,22 @@ public class TimePickerClass {
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
 
-            Activity a = getActivity();
-
-
-
+            Activity activity = getActivity();
+            Context context = activity.getApplicationContext();
+            MySharedPreff mySharedPreff = new MySharedPreff(context);
             whocalled w = new whocalled();
             int who = w.getwhocalledme();
-            if (who==-1) {
-                Toast.makeText(getActivity(), "-1", Toast.LENGTH_LONG).show();
-                return hideminuteCalendar(new TimePickerDialog(getActivity(), this, hour, minute, true));
-            }
-            else if (who==1){
-                return hideminuteCalendar(new TimePickerDialog(getActivity(), this, hour, minute, true));
-            }
-            else if (who==2){
-                return hideyearCalendar( new DatePickerDialog(getActivity(), this, year, month, day));
-            }
-            else if (who==3){
-                return  hideminuteCalendar(new TimePickerDialog(getActivity(), this, hour, minute, true));
-            }
-            else if (who==4){
-                return hideyearCalendar( new DatePickerDialog(getActivity(), this, year, month, day));
-            }
-            else {
-                return hideminuteCalendar(new TimePickerDialog(getActivity(), this, hour, minute, true));
-            }
-            /*switch (who){
-                case  -1 :
+            switch (who){
+                case 1://create the calendar dialogs in relation to whos called
                     return hideminuteCalendar(new TimePickerDialog(getActivity(), this, hour, minute, true));
-                    Toast.makeText(getActivity(), "NOOO",Toast.LENGTH_SHORT).show();
-                    break;
-                case 1: //TIME
-                    Toast.makeText(getActivity(), "time",Toast.LENGTH_SHORT).show();
-                    break;
-                case 2: //DATE
-                    Toast.makeText(getActivity(), "date",Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    Toast.makeText(getActivity(), "DEF",Toast.LENGTH_SHORT).show();
-                    break;
-            }*/
+                case 2:
+                    return hideyearCalendar(new DatePickerDialog(getActivity(), this, year, month, day));
+                case 3:
+                    return  hideminuteCalendar(new TimePickerDialog(getActivity(), this, hour, minute, true));
+                case 4:
+                    return hideyearCalendar( new DatePickerDialog(getActivity(), this, year, month, day));
+                default: return hideminuteCalendar(new TimePickerDialog(getActivity(), this, hour, minute, true));
+            }
 
 
 
@@ -198,26 +174,34 @@ private Dialog hideminuteCalendar( TimePickerDialog timePickerDialog) {
 
 
 
-
-
-
-
-
-
-        public void onDateSet(DatePicker view, int year, int month, int what){
+        public void onDateSet(DatePicker view, int year, int month, int day){
             Activity a = getActivity();
-            Toast.makeText(a, year + " onDateSet " + month, Toast.LENGTH_SHORT).show();
+            Context context = a.getApplicationContext();
 
+            MySharedPreff mySharedPreff = new MySharedPreff(context);
             month+=1;
             TextView DateFrom = (TextView)a.findViewById(R.id.FromDate);
             TextView DateTo=(TextView)a.findViewById(R.id.ToDate);
+            String monthStr = String.format("%02d",month);
+            String dayStr = String.format("%02d",day);
+
             whocalled w = new whocalled();
             switch (w.getwhocalledme()){
                 case 2:
-                    DateFrom.setText(what + "/"+month + "/" +year);
+                    DateFrom.setText(dayStr + "/" + monthStr + "/" + year);
+                    mySharedPreff.addInt("FromDateMonth", month);
+                    mySharedPreff.addInt("FromDateYear",year);
+                    mySharedPreff.addInt("FromDateDay", day);
+                    //signal FromDate is set
+                    mySharedPreff.addInt("FromDateSET",1);
                     break;
                 case 4:
-                    DateTo.setText(what + "/"+month + "/" +year);
+                    mySharedPreff.addInt("ToDateMonth",month);
+                    mySharedPreff.addInt("ToDateYear",year);
+                    mySharedPreff.addInt("ToDateDay", day);
+                    //signal ToDate is set
+                    mySharedPreff.addInt("ToDateSET",1);
+                    DateTo.setText(dayStr + "/" + monthStr + "/" + year);
                     break;
                 default:
                     break;
@@ -225,24 +209,33 @@ private Dialog hideminuteCalendar( TimePickerDialog timePickerDialog) {
         }
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             // Do something with the time chosen by the user
-            //Toast.makeText(getActivity(), " onTimeSet, hour= " + hourOfDay, Toast.LENGTH_SHORT).show();
             Activity a = getActivity();
+            Context context = a.getApplicationContext();
+            MySharedPreff mySharedPreff = new MySharedPreff(context);
             TextView TimeFrom = (TextView)a.findViewById(R.id.FromTime);
             TextView TimeUntil = (TextView)a.findViewById(R.id.ToTime);
-            //TimeFrom.setText(hourOfDay + " : "+minute);
-
+            String hourOfDayStr = String.format("%02d", hourOfDay);
+            String minuteStr = String.format("%02d", minute);
             whocalled w = new whocalled();
             switch (w.getwhocalledme()){
                 case 1:
-                    TimeFrom.setText(hourOfDay + " : "+minute);
+                    TimeFrom.setText(hourOfDayStr + " : " + minuteStr);
+                    mySharedPreff.addInt("TimeFromHour", hourOfDay);
+                    mySharedPreff.addInt("TimeFromMinute", minute);
+                    //signal TimeFrom is set
+                    mySharedPreff.addInt("TimeFromSET",1);
                     break;
                 case 3: ///called by BtnFromTime
-                    TimeUntil.setText(hourOfDay + " : "+minute);
+                    TimeUntil.setText(hourOfDayStr + " : "+minuteStr);
+                    mySharedPreff.addInt("TimeToHour", hourOfDay);
+                    mySharedPreff.addInt("TimeToMinute", minute);
+                    //signal TimeTo is set
+                    mySharedPreff.addInt("TimeToSET",1);
+
                     break;
                 default:
                     break;
             }
-            Toast.makeText(getActivity(), " adsasdonTimeSet, hour= " + hourOfDay, Toast.LENGTH_SHORT).show();
         }
 
     }
