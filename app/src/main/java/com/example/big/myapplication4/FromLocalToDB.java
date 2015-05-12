@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TreeMap;
 
 /**
  * Created by PC on 09-May-15.
@@ -91,8 +92,6 @@ public class FromLocalToDB {
     }
     public boolean CompareDatesFromTo(Locale currentLocale){
 
-
-
         //check ALL fields are set, is done by click, with .ShowToastsforDataMissing calling
         //no need to check for specific fullfillment here, just ALLSET
         if(ALLSET==1){ Log.e("ALL IS SET","YES");}
@@ -108,7 +107,6 @@ public class FromLocalToDB {
         String to = ToDateYear+"-"+ToDateMonthString+"-"+ToDateDayString+" "+TimeToHour+":"+TimeToMinute;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",currentLocale);
-        Log.e("DATEEEE",sdf+" SimpleDateFormat ");
         Date strDateFrom = null;
         Date strDateTo = null;
         try {
@@ -123,7 +121,7 @@ public class FromLocalToDB {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (b){Log.e("True","True");}
+        if (b){Log.e("DateComparison","Pass");}
         LogAllOut();
         return  b;
     }

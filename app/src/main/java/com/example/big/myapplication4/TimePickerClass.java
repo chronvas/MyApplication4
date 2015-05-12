@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -180,8 +181,12 @@ private Dialog hideminuteCalendar( TimePickerDialog timePickerDialog) {
 
             MySharedPreff mySharedPreff = new MySharedPreff(context);
             month+=1;
+
             TextView DateFrom = (TextView)a.findViewById(R.id.FromDate);
             TextView DateTo=(TextView)a.findViewById(R.id.ToDate);
+
+            Button DateFromBtn = (Button)a.findViewById(R.id.BtnFromDate);
+
             String monthStr = String.format("%02d",month);
             String dayStr = String.format("%02d",day);
 
@@ -189,6 +194,7 @@ private Dialog hideminuteCalendar( TimePickerDialog timePickerDialog) {
             switch (w.getwhocalledme()){
                 case 2:
                     DateFrom.setText(dayStr + "/" + monthStr + "/" + year);
+                    DateFromBtn.setText(dayStr + "/" + monthStr + "/" + year);
                     mySharedPreff.addInt("FromDateMonth", month);
                     mySharedPreff.addInt("FromDateYear",year);
                     mySharedPreff.addInt("FromDateDay", day);
