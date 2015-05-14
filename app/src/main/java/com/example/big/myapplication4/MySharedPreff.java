@@ -7,34 +7,37 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import java.sql.SQLData;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 /**
  * Created by PC on 08-May-15.
  */
-public class MySharedPreff extends Activity {
 
+public class MySharedPreff extends Activity {
     /*
     The fucking 1 in int type can not be used
     also the true in booleans
     some fucking magic android way the ints are set to 1 by default
      */
-
+    //store the names of each item (String or Int) that has been added(by addString and addInt methods)
     public Context context;
-
     /*public SharedPreferences getSharedPref(){
         return sharedpreferences;
     }*/
-    public MySharedPreff(Context context) {
-        this.context = context;
-    }
-    public void   setContext(Context context){
+
+    public void  setContext(Context context){
         this.context=context;
 
     }
-    public MySharedPreff() {
+    public MySharedPreff(){
+
     }
+    public MySharedPreff(Context context) {
+        this.context = context;
+    }
+
     public void CleanAllPreviousData(){
         SharedPreferences sharedpreferences = context.getSharedPreferences("sharedpref", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -44,7 +47,9 @@ public class MySharedPreff extends Activity {
     public boolean CheckContains(String Name){
         SharedPreferences sharedpreferences = context.getSharedPreferences("sharedpref", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.apply();
         return sharedpreferences.contains(Name);
+
     }
 
     public void addString(String StrKey,String StrVALUE){

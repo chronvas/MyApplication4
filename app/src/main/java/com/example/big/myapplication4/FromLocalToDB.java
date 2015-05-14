@@ -64,10 +64,8 @@ public class FromLocalToDB {
             Log.e("ALL SET =========", "1111111111111111111" + FromDateSET);
         }
     }
-    public void ShowToastsforDataMissing(Context applicationContext){
-        if(this.ALLSET!=1){
-            Toast.makeText(applicationContext, "Fields Missing!", Toast.LENGTH_LONG).show();
-        }
+    public Boolean FieldsAllSet(){
+        return this.ALLSET == 1;
     }
     public void LogAllOut(){
         Log.e("LOGGG","------------about to begin");
@@ -88,43 +86,62 @@ public class FromLocalToDB {
         Log.e("TimeFromSET", TimeFromSET + "");
         Log.e("TimeToSET", TimeToSET + "");
         Log.e("ALLSET",ALLSET+"");
-        Log.e("LOGGG","------------END");
+        Log.e("LOGGG", "------------END");
     }
-    public boolean CompareDatesFromTo(Locale currentLocale){
-
-        //check ALL fields are set, is done by click, with .ShowToastsforDataMissing calling
-        //no need to check for specific fullfillment here, just ALLSET
-        if(ALLSET==1){ Log.e("ALL IS SET","YES");}
-        else{ Log.e("ALL IS SET","NO"); }
+    public boolean CompareDatesFromTo(Locale currentLocale, Context applicationContext){
 
 
-        //check FROM-TO validity
-        String FromDateDayString = String.format("%02d",FromDateDay);
-        String FromDateMonthString = String.format("%02d",FromDateMonth);
-        String ToDateDayString = String.format("%02d",ToDateDay);
-        String ToDateMonthString = String.format("%02d",ToDateMonth);
-        String from = FromDateYear+"-"+FromDateMonthString+"-"+FromDateDayString+" "+TimeFromHour+":"+TimeFromMinute;
-        String to = ToDateYear+"-"+ToDateMonthString+"-"+ToDateDayString+" "+TimeToHour+":"+TimeToMinute;
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",currentLocale);
-        Date strDateFrom = null;
-        Date strDateTo = null;
-        try {
-            strDateFrom = sdf.parse(from);
-            strDateTo=sdf.parse(to);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
+        if (!FieldsAllSet()){ //If the fields are not set, return showing a toast
+            Toast.makeText(applicationContext,"Συμπληρώστε όλα τα πεδία",Toast.LENGTH_LONG).show();
+            return false;
         }
-        Boolean b = false;
-        try {
-             b = strDateTo.after(strDateFrom);
-        } catch (Exception e) {
-            e.printStackTrace();
+        else {              //else contunue to comparison
+            Log.e("Fields Set","True. Moving to comparison");
+
+            String FromDateDayString = String.format("%02d", FromDateDay);
+            String FromDateMonthString = String.format("%02d", FromDateMonth);
+            String ToDateDayString = String.format("%02d", ToDateDay);
+            String ToDateMonthString = String.format("%02d", ToDateMonth);
+            String from = FromDateYear + "-" + FromDateMonthString + "-" + FromDateDayString + " " + TimeFromHour + ":" + TimeFromMinute;
+            String to = ToDateYear + "-" + ToDateMonthString + "-" + ToDateDayString + " " + TimeToHour + ":" + TimeToMinute;
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", currentLocale);
+            Date strDateFrom = null;
+            Date strDateTo = null;
+            Boolean ComparisonOK;
+            //get dates to String
+            try {
+                strDateFrom = sdf.parse(from);
+                strDateTo = sdf.parse(to);
+            } catch (java.text.ParseException e){
+               e.printStackTrace();
+            }
+            //Compare dates
+            ComparisonOK = false;
+            try {
+                ComparisonOK = strDateTo.after(strDateFrom);
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+            if (ComparisonOK) {
+                Log.e("DateComparison", "True");
+            } else {
+                Log.e("DateComparison", "False");
+            }
+
+            //LogAllOut();
+            if (!ComparisonOK) {
+                Toast.makeText(applicationContext, "Λανθασμένες ημερομηνίες", Toast.LENGTH_LONG).show();
+                return false;
+            }else{
+                Toast.makeText(applicationContext, "Σωστός ο παιχτης", Toast.LENGTH_LONG).show();
+                return true;
+
+            }
         }
-        if (b){Log.e("DateComparison","Pass");}
-        LogAllOut();
-        return  b;
     }
+
+
 
    /* public void CommitInDB(MySharedPreff mySharedPreff, DBDatahandling dbDatahandling){
         ////get

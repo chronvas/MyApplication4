@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import java.lang.reflect.Field;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
@@ -176,63 +177,61 @@ private Dialog hideminuteCalendar( TimePickerDialog timePickerDialog) {
 
 
         public void onDateSet(DatePicker view, int year, int month, int day){
+            // Do something with the DATE chosen by the user
             Activity a = getActivity();
             Context context = a.getApplicationContext();
 
             MySharedPreff mySharedPreff = new MySharedPreff(context);
             month+=1;
 
-            TextView DateFrom = (TextView)a.findViewById(R.id.FromDate);
-            TextView DateTo=(TextView)a.findViewById(R.id.ToDate);
-
             Button DateFromBtn = (Button)a.findViewById(R.id.BtnFromDate);
+            Button DateToBtn = (Button)a.findViewById(R.id.BtnToDate);
 
             String monthStr = String.format("%02d",month);
             String dayStr = String.format("%02d",day);
-
+            ArrayList<String> MYFLIST = new ArrayList<>();
             whocalled w = new whocalled();
             switch (w.getwhocalledme()){
                 case 2:
-                    DateFrom.setText(dayStr + "/" + monthStr + "/" + year);
                     DateFromBtn.setText(dayStr + "/" + monthStr + "/" + year);
                     mySharedPreff.addInt("FromDateMonth", month);
                     mySharedPreff.addInt("FromDateYear",year);
                     mySharedPreff.addInt("FromDateDay", day);
                     //signal FromDate is set
-                    mySharedPreff.addInt("FromDateSET",1);
+                    mySharedPreff.addInt("FromDateSET", 1);
                     break;
                 case 4:
                     mySharedPreff.addInt("ToDateMonth",month);
                     mySharedPreff.addInt("ToDateYear",year);
                     mySharedPreff.addInt("ToDateDay", day);
                     //signal ToDate is set
-                    mySharedPreff.addInt("ToDateSET",1);
-                    DateTo.setText(dayStr + "/" + monthStr + "/" + year);
+                    mySharedPreff.addInt("ToDateSET", 1);
+                    DateToBtn.setText(dayStr + "/" + monthStr + "/" + year);
                     break;
                 default:
                     break;
             }
         }
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
+            // Do something with the TIME chosen by the user
             Activity a = getActivity();
             Context context = a.getApplicationContext();
             MySharedPreff mySharedPreff = new MySharedPreff(context);
-            TextView TimeFrom = (TextView)a.findViewById(R.id.FromTime);
-            TextView TimeUntil = (TextView)a.findViewById(R.id.ToTime);
+            Button TimeFromBtn = (Button)a.findViewById(R.id.BtnFromTime);
+            Button TimeToBtn = (Button)a.findViewById(R.id.BtnToTime);
             String hourOfDayStr = String.format("%02d", hourOfDay);
             String minuteStr = String.format("%02d", minute);
             whocalled w = new whocalled();
             switch (w.getwhocalledme()){
                 case 1:
-                    TimeFrom.setText(hourOfDayStr + " : " + minuteStr);
+                    TimeFromBtn.setText(hourOfDayStr + " : " + minuteStr);
                     mySharedPreff.addInt("TimeFromHour", hourOfDay);
                     mySharedPreff.addInt("TimeFromMinute", minute);
                     //signal TimeFrom is set
                     mySharedPreff.addInt("TimeFromSET",1);
                     break;
                 case 3: ///called by BtnFromTime
-                    TimeUntil.setText(hourOfDayStr + " : "+minuteStr);
+                    TimeToBtn.setText(hourOfDayStr + " : "+minuteStr);
                     mySharedPreff.addInt("TimeToHour", hourOfDay);
                     mySharedPreff.addInt("TimeToMinute", minute);
                     //signal TimeTo is set

@@ -1,8 +1,6 @@
 package com.example.big.myapplication4;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,10 +9,7 @@ import android.app.DialogFragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 //gia to locale
 //Locale currentLocale = getResources().getConfiguration().locale;
@@ -22,8 +17,6 @@ public class MainActivity extends Activity {
    /* MySharedPreff mySharedPreff;
     SharedPreferences sharedpreferences;
     FromLocalToDB fromLocalToDB;*/
-
-
 
 
     public static MySharedPreff mySharedPreff = new MySharedPreff();
@@ -35,11 +28,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Button setBtn = (Button)findViewById(R.id.button);
         mySharedPreff.setContext(getApplicationContext());
-        if (savedInstanceState!=null){
+        if(savedInstanceState!=null){
             //has some data inside. place them in the appropriate fields
+
+
         }else{
             Log.e("savedInstanceState", "was NULL, SharedPref.. data cleaned by Main");
             mySharedPreff.CleanAllPreviousData();
+
         }
         //final Calendar c = Calendar.getInstance();
          //int min = c.get(Calendar.YEAR);
@@ -54,7 +50,7 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("whyucalled", "");
         editor.apply(); //anti gia commit()*/
-        MySharedPreff mySharedPreff = new MySharedPreff(getApplicationContext());
+        //MySharedPreff mySharedPreff = new MySharedPreff(getApplicationContext());
 
         mySharedPreff.addString("whyucalled","");
 
@@ -116,15 +112,20 @@ public class MainActivity extends Activity {
         //fromLocalToDB.getFromSharedPref(mySharedPreff);
         //go.getFromSharedPref(mySharedPreff);
         //Call
-        fromLocalToDB.ShowToastsforDataMissing(getApplicationContext());
-        fromLocalToDB.CompareDatesFromTo(currentLocale);
+
+        //if fields are complete, continue with comparison
+        fromLocalToDB.CompareDatesFromTo(currentLocale, getApplicationContext());
+        /*int ff = mySharedPreff.LIST.size();
+        int xx =mySharedPreff.LIST.size();*/
 
 
-
-
-
-
-
+       /* mySharedPreff.addToTheList("enadyotria");
+        mySharedPreff.addToTheList("enadyotria");
+        mySharedPreff.addToTheList("enadyotria");
+        ArrayList<String> mainList = mySharedPreff.getTheList();
+        for(String object: mainList){
+            System.out.println(object);
+        }*/
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
